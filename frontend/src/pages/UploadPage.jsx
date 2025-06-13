@@ -82,7 +82,7 @@ const UploadPage = () => {
     if (taskState === 'PROCESSING') {
         return (
             <div className="card shadow-sm mb-4">
-                <div className="card-header bg-light"><h5 className="mb-0"><i className="fas fa-sync-alt fa-spin me-2"></i>Processing Videos from S3</h5></div>
+                <div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-sync-alt fa-spin me-2"></i>Processing Videos from S3</h5></div>
                 <div className="card-body text-center p-5">
                     <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}><span className="visually-hidden">Loading...</span></div>
                     <h4 className="mt-3">Extracting frames, please wait...</h4>

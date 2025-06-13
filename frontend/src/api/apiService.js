@@ -100,7 +100,7 @@ export const retrieveVideos = async (formData) => {
  * Uploads a video file directly to the S3 bucket.
  */
 export const uploadVideoToS3 = async (formData, signal) => {
-     const response = await fetchWithAuth(`${API_gURL}/s3-upload`, {
+     const response = await fetchWithAuth(`${API_URL}/s3-upload`, {
         method: 'POST',
         headers: getAuthHeaders(false),
         body: formData,

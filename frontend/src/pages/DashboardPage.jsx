@@ -103,12 +103,12 @@ const DashboardPage = () => {
 
             {/* Charts */}
             <div className="row mb-4">
-                <div className="col-lg-8 mb-4"><div className="card shadow-sm h-100"><div className="card-header"><h5 className="mb-0"><i className="fas fa-chart-bar me-2"></i>Damage Distribution by Date</h5></div><div className="card-body"><canvas ref={damageChartRef}></canvas></div></div></div>
-                <div className="col-lg-4"><div className="card shadow-sm h-100"><div className="card-header"><h5 className="mb-0"><i className="fas fa-chart-pie me-2"></i>Damage Types</h5></div><div className="card-body"><canvas ref={typesChartRef}></canvas></div></div></div>
+                <div className="col-lg-8 mb-4"><div className="card shadow-sm h-100"><div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-chart-bar me-2"></i>Damage Distribution by Date</h5></div><div className="card-body"><canvas ref={damageChartRef}></canvas></div></div></div>
+                <div className="col-lg-4"><div className="card shadow-sm h-100"><div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-chart-pie me-2"></i>Damage Types</h5></div><div className="card-body"><canvas ref={typesChartRef}></canvas></div></div></div>
             </div>
             <div className="row mb-4">
-                <div className="col-lg-6 mb-4"><div className="card shadow-sm h-100"><div className="card-header"><h5 className="mb-0"><i className="fas fa-chart-pie me-2"></i>Severity Distribution</h5></div><div className="card-body"><canvas ref={severityChartRef}></canvas></div></div></div>
-                <div className="col-lg-6"><div className="card shadow-sm h-100"><div className="card-header"><h5 className="mb-0"><i className="fas fa-map-marker-alt me-2"></i>Damage Locations</h5></div><div className="card-body"><canvas ref={locationChartRef}></canvas></div></div></div>
+                <div className="col-lg-6 mb-4"><div className="card shadow-sm h-100"><div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-chart-pie me-2"></i>Severity Distribution</h5></div><div className="card-body"><canvas ref={severityChartRef}></canvas></div></div></div>
+                <div className="col-lg-6"><div className="card shadow-sm h-100"><div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-map-marker-alt me-2"></i>Damage Locations</h5></div><div className="card-body"><canvas ref={locationChartRef}></canvas></div></div></div>
             </div>
         </div>
     );

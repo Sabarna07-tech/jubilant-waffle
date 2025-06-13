@@ -40,6 +40,22 @@ const RoleProtectedRoute = ({ children, allowedRole }) => {
     return children;
 }
 
+/**
+ * FIX: A new component to act as a gate for the homepage.
+ * It checks the user's role and directs them to the correct dashboard.
+ */
+const RoleBasedHomePage = () => {
+    const userRole = localStorage.getItem('role');
+
+    if (userRole === 's3_uploader') {
+        // If the user is an uploader, redirect them to their specific dashboard.
+        return <Navigate to="/s3_dashboard" replace />;
+    }
+
+    // Otherwise, for any other role, show the default admin homepage.
+    return <HomePage />;
+};
+
 
 function App() {
     return (
@@ -57,13 +73,15 @@ function App() {
                 }
             >
                 {/* Child routes of BaseLayout */}
-                <Route index element={<HomePage />} />
+                {/* FIX: The index route now uses the RoleBasedHomePage gate */}
+                <Route index element={<RoleBasedHomePage />} />
+                
                 <Route path="upload" element={<UploadPage />} />
                 <Route path="frame_extraction" element={<FrameExtractionPage />} />
                 <Route path="damage_detection" element={<DamageDetectionPage />} />
                 <Route path="dashboard" element={<DashboardPage />} />
                 
-                {/* Role-specific protected route */}
+                {/* Role-specific protected route for the S3 Uploader Dashboard */}
                 <Route 
                     path="s3_dashboard" 
                     element={
@@ -80,5 +98,4 @@ function App() {
     );
 }
 
-// FIX: Removed extra closing brace that was causing a syntax error.
 export default App;

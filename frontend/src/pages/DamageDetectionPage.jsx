@@ -86,7 +86,7 @@ const DamageDetectionPage = () => {
 
             {view === 'form' && (
                 <div className="card shadow-sm mb-4">
-                    <div className="card-header bg-light"><h5 className="mb-0"><i className="fas fa-calendar-alt me-2"></i>Select Date and Video</h5></div>
+                    <div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-calendar-alt me-2"></i>Select Date and Video</h5></div>
                     <div className="card-body">
                         <form onSubmit={handleProcess}>
                             <div className="row g-4">
@@ -101,7 +101,7 @@ const DamageDetectionPage = () => {
             
             {view === 'processing' && (
                 <div className="card shadow-sm">
-                    <div className="card-header bg-light"><h5 className="mb-0"><i className="fas fa-cogs me-2"></i>Processing Status</h5></div>
+                    <div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-cogs me-2"></i>Processing Status</h5></div>
                     <div className="card-body">
                          <h4 className="text-center mb-4">Processing Video for Damage Detection</h4>
                          <div className="progress mb-4" style={{ height: '25px' }}><div className="progress-bar progress-bar-striped progress-bar-animated bg-success" style={{ width: `${progress}%` }}>{progress}%</div></div>
@@ -123,7 +123,7 @@ const DamageDetectionPage = () => {
             
             {view === 'results' && (
                 <div className="card shadow-sm">
-                    <div className="card-header bg-light"><h5 className="mb-0"><i className="fas fa-clipboard-check me-2"></i>Detection Results</h5></div>
+                    <div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-clipboard-check me-2"></i>Detection Results</h5></div>
                     <div className="card-body">
                         <div className="alert alert-success"><i className="fas fa-check-circle me-2"></i>Processing complete!</div>
                          {/* Results summary and table would be populated from API data */}

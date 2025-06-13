@@ -226,7 +226,7 @@ const S3DashboardPage = () => {
                 {/* Upload Form */}
                 <div className="col-lg-7">
                     <div className="card shadow-sm">
-                        <div className="card-header bg-primary text-white"><h5 className="mb-0"><i className="fas fa-upload me-2"></i>Upload Video to S3 Bucket</h5></div>
+                        <div className="card-header bg-primary text-white text-center"><h5 className="mb-0"><i className="fas fa-upload me-2"></i>Upload Video to S3 Bucket</h5></div>
                         <div className="card-body">
                             <form onSubmit={handleUpload}>
                                 <div className="row">
@@ -282,7 +282,7 @@ const S3DashboardPage = () => {
                 {/* Recent Uploads */}
                 <div className="col-lg-5">
                     <div className="card shadow-sm">
-                        <div className="card-header"><h5 className="mb-0"><i className="fas fa-history me-2"></i>Recent Upload Status</h5></div>
+                        <div className="card-header text-center"><h5 className="mb-0"><i className="fas fa-history me-2"></i>Recent Upload Status</h5></div>
                         <div className="card-body" style={{ maxHeight: '450px', overflowY: 'auto' }}>
                             { recentUploads.length === 0 ? <p className="text-muted text-center">No recent uploads.</p> : (
                                 <ul className="list-group list-group-flush">
