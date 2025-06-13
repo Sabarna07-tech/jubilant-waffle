@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // FIX: Changed import paths to be relative.
 import '../assets/css/upload.css';
 import { startFrameExtraction, getTaskStatus } from '../api/apiService.js';
+import { Link } from 'react-router-dom';
 
 const FrameExtractionPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -77,7 +78,7 @@ const FrameExtractionPage = () => {
         setView('processing');
         setProgress(0);
         setStatusText('Submitting...');
-        
+
         abortControllerRef.current = new AbortController();
 
         const formData = new FormData();
@@ -115,7 +116,8 @@ const FrameExtractionPage = () => {
                     <h2 className="page-title"><i className="fas fa-object-group me-2 text-success"></i>Frame Extraction</h2>
                     <nav aria-label="breadcrumb">
                         <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><a href="/">Home</a></li>
+                            {/* FIX: Changed <a> tag to <Link> for proper SPA navigation */}
+                            <li className="breadcrumb-item"><Link to="/">Home</Link></li>
                             <li className="breadcrumb-item active">Frame Extraction</li>
                         </ol>
                     </nav>

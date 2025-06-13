@@ -100,7 +100,7 @@ export const retrieveVideos = async (formData) => {
  * Uploads a video file directly to the S3 bucket.
  */
 export const uploadVideoToS3 = async (formData, signal) => {
-     const response = await fetchWithAuth(`${API_URL}/s3-upload`, {
+     const response = await fetchWithAuth(`${API_gURL}/s3-upload`, {
         method: 'POST',
         headers: getAuthHeaders(false),
         body: formData,
@@ -153,18 +153,19 @@ export const getChartData = async () => {
     });
     return response.json();
 };
+
+/**
+ * FIX: Corrected the getVideoUrl function to use the API_URL prefix and the
+ * fetchWithAuth wrapper for consistency and proper error handling.
+ */
 export const getVideoUrl = async (s3_key) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('/api/get-video-url', {
+    const response = await fetchWithAuth(`${API_URL}/get-video-url`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ s3_key }),
     });
     if (!response.ok) {
       throw new Error('Failed to fetch video URL');
     }
     return response.json();
-  };
+};

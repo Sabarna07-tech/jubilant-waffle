@@ -7,7 +7,7 @@ import {
     uploadVideoToS3,
     checkS3UploadStatus,
     retrieveVideos,
-    processS3Videos,
+    // FIX: processS3Videos is handled by the context now, so it's not needed here.
     getVideoUrl
 } from '/src/api/apiService.js';
 
@@ -16,7 +16,6 @@ import '/src/assets/css/s3_dashboard.css';
 import '/src/assets/css/s3_upload.css';
 
 const S3DashboardPage = () => {
-    // FIX: Get the user's role from localStorage
     const userRole = localStorage.getItem('role');
 
     // === STATE FOR UPLOAD SECTION ===
@@ -30,7 +29,10 @@ const S3DashboardPage = () => {
     const fileInputRef = useRef(null);
     
     // === STATE FOR RETRIEVE & PREVIEW SECTION ===
-    const { startTaskPolling } = useTask();
+    
+    // FIX: Destructure the correct function from the context.
+    const { startS3FrameExtraction } = useTask();
+
     const [retrieveForm, setRetrieveForm] = useState({
         retrieve_date: new Date().toISOString().split('T')[0],
         client_id: localStorage.getItem('username') || 'Unknown User',
@@ -79,7 +81,7 @@ const S3DashboardPage = () => {
     }, []);
 
     const removeFile = (e) => {
-        e.stopPropagation();
+        if (e) e.stopPropagation();
         setSelectedFile(null);
         if(fileInputRef.current) {
             fileInputRef.current.value = "";
@@ -207,19 +209,14 @@ const S3DashboardPage = () => {
         }
     };
 
+    /**
+     * FIX: Corrected the handleProcess function. It now uses the startS3FrameExtraction
+     * function from the context, which correctly initiates the backend task and polling.
+     */
     const handleProcess = async (folderName) => {
-        try {
-            const response = await processS3Videos(folderName);
-            if (response.success) {
-                toast.success(`Started processing for folder: ${folderName}`);
-                startTaskPolling(response.task_id);
-            } else {
-                toast.error(response.error || 'Failed to start processing.');
-            }
-        } catch (error) {
-            toast.error('An error occurred while starting the processing task.');
-            console.error(error);
-        }
+        const folderToProcess = { name: folderName };
+        // The context will show its own toast messages.
+        await startS3FrameExtraction(folderToProcess);
     };
 
     return (
@@ -307,7 +304,6 @@ const S3DashboardPage = () => {
                 </div>
             </div>
 
-            {/* FIX: Conditionally render the entire Retrieve & Process section */}
             {userRole !== 's3_uploader' && (
                 <>
                     <hr className="my-5" />

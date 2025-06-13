@@ -2,7 +2,7 @@
 body {
     font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
     min-height: 100vh;
-    background-color: #f0f4f8;
+    /* FIX: Removed background-color to allow the gradient from style.css to show. */
 }
 
 .fade-in {

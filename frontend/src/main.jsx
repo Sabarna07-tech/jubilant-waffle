@@ -9,9 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import './assets/css/common.css';
-import './assets/css/base.css';
+// import './assets/css/common.css';
+// import './assets/css/base.css';
+import './assets/css/style.css'; 
 import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

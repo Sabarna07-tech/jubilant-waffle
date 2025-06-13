@@ -1,13 +1,13 @@
 /* S3 Upload Page Styles */
 
 /*
-  FIX: Removed the global 'body' and '.container' styles that were causing
-  scrolling issues on other pages. These styles are now applied via a
-  specific class added to the body tag by the S3DashboardPage component.
+FIX: Removed the global 'body' and '.container' styles that were causing
+scrolling issues on other pages. These styles are now applied via a
+specific class added to the body tag by the S3DashboardPage component.
 */
 body.s3-upload-page-body {
-    background-color: #f0f8ff !important;
-    /* Use important to override base styles */
+    /* FIX: Replaced solid background color with a gradient, keeping !important */
+    background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%) !important;
     overflow-y: hidden !important;
     /* Prevent vertical scrolling */
 }
@@ -17,7 +17,6 @@ body.s3-upload-page-body #s3_upload_container {
     max-height: 100vh;
     overflow: hidden;
 }
-
 
 .upload-zone {
     border: 2px dashed rgba(0, 0, 0, 0.1);
@@ -33,7 +32,6 @@ body.s3-upload-page-body #s3_upload_container {
     align-items: center;
     justify-content: center;
     height: 100%;
-    transition: all 0.3s ease;
 }
 
 .upload-zone-content {
@@ -153,7 +151,14 @@ hr {
 }
 
 .progress-bar-striped {
-    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(45deg,
+            rgba(255, 255, 255, 0.15) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.15) 50%,
+            rgba(255, 255, 255, 0.15) 75%,
+            transparent 75%,
+            transparent);
     background-size: 1rem 1rem;
 }
 

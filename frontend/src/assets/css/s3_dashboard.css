@@ -1,6 +1,7 @@
 /* S3 Dashboard Specific Styles */
 body {
-    background-color: #f0f8ff; /* Light blue background for S3 uploader interface */
+    /* FIX: Replaced solid background color with a gradient */
+    background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
 }
 
 .navbar {
@@ -147,7 +148,8 @@ body {
     .dashboard-card h3 {
         font-size: 1.25rem;
     }
-} 
+}
+
 .video-preview-container {
     display: flex;
     align-items: center;
