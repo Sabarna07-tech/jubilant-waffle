@@ -29,11 +29,15 @@ const DamageDetailsModal = ({ isOpen, onClose, data }) => {
                             <div className="flex-grow-1" style={{ overflowY: 'auto' }}>
                                 <h6 className="mb-3">Damage Analysis</h6>
                                 <table className="table table-hover table-sm">
-                                    <thead><tr><th>Wagon #</th><th>View</th><th>Damage Type</th><th>Severity</th><th>Confidence</th></tr></thead>
+                                    <thead>
+                                        <tr><th>Wagon #</th><th>View</th><th>Damage Type</th><th>Severity</th><th>Confidence</th></tr>
+                                    </thead>
                                     <tbody>
                                         {data.details.length > 0 ? data.details.map((d, i) => (
                                             <tr key={i}>
-                                                <td>{d.wagon}</td><td>{d.view}</td><td>{d.type}</td>
+                                                <td>{d.wagon}</td>
+                                                <td>{d.view}</td>
+                                                <td>{d.type}</td>
                                                 <td><span className={`status-badge ${d.sev.toLowerCase()}`}>{d.sev}</span></td>
                                                 <td>{d.confidence}</td>
                                             </tr>
@@ -59,28 +63,33 @@ const DamageDetailsModal = ({ isOpen, onClose, data }) => {
     );
 };
 
+
 // --- The Main Dashboard Page Component ---
-const DashboardPage = () => {
+const NewDashboardPage = () => {
+    // State for managing the details modal
     const [isModalOpen, setModalOpen] = useState(false);
     const [selectedTrain, setSelectedTrain] = useState(null);
 
-    // Mock data for the table
+    // Sample data for the table
     const sampleDetections = [
         { id: 'TR-2025-001', date: '2025-06-13', wagons: 45, status: 'Completed', primaryDamage: 'Surface Scratches', severity: 'Low', details: [{ wagon: 'W03', view: 'Left Side', type: 'Surface Scratch', sev: 'Low', confidence: '94.2%' }] },
         { id: 'TR-2025-002', date: '2025-06-13', wagons: 38, status: 'Critical', primaryDamage: 'Structural Damage', severity: 'High', details: [{ wagon: 'W03', view: 'Left Side', type: 'Structural Crack', sev: 'High', confidence: '99.1%' }] },
         { id: 'TR-2025-003', date: '2025-06-12', wagons: 52, status: 'Completed', primaryDamage: 'No Issues', severity: 'None', details: [] },
     ];
     
+    // Function to open the modal with specific train data
     const handleViewDetails = (train) => {
         setSelectedTrain(train);
         setModalOpen(true);
     };
     
+    // Function to close the modal
     const handleCloseModal = () => {
         setModalOpen(false);
         setSelectedTrain(null);
     };
 
+    // This useEffect hook sets up and tears down the charts
     useEffect(() => {
         const chartInstances = [];
         const createChart = (ctx, config) => {
@@ -112,6 +121,7 @@ const DashboardPage = () => {
     return (
         <>
             <div className="fade-in">
+                {/* Section 1: KPI Cards */}
                 <div className="dashboard-grid">
                     <div className="kpi-card"><div className="kpi-header"><span className="kpi-title">Total Trains</span><div className="kpi-icon primary"><i className="fas fa-train"></i></div></div><div className="kpi-value">1,247</div><div className="kpi-change positive"><i className="fas fa-arrow-up"></i><span>+12%</span></div></div>
                     <div className="kpi-card success"><div className="kpi-header"><span className="kpi-title">Processed Videos</span><div className="kpi-icon success"><i className="fas fa-video"></i></div></div><div className="kpi-value">7,482</div><div className="kpi-change positive"><i className="fas fa-arrow-up"></i><span>6 per train</span></div></div>
@@ -121,12 +131,14 @@ const DashboardPage = () => {
                     <div className="kpi-card danger"><div className="kpi-header"><span className="kpi-title">Critical Issues</span><div className="kpi-icon danger"><i className="fas fa-times-circle"></i></div></div><div className="kpi-value">12</div><div className="kpi-change neutral"><span>Immediate</span></div></div>
                 </div>
 
+                {/* Section 2: Charts */}
                 <div className="charts-section">
                     <div className="chart-card"><div className="chart-header"><h3 className="chart-title">Weekly Trains Processed</h3></div><div className="chart-container"><canvas id="weeklyTrainsChart"></canvas></div></div>
                     <div className="chart-card"><div className="chart-header"><h3 className="chart-title">Damage Types Distribution</h3></div><div className="chart-container"><canvas id="damageTypesChart"></canvas></div></div>
                     <div className="chart-card"><div className="chart-header"><h3 className="chart-title">Damage Severity Trends</h3></div><div className="chart-container"><canvas id="severityTrendsChart"></canvas></div></div>
                 </div>
 
+                {/* Section 3: Data Table */}
                 <div className="data-section">
                     <div className="section-header"><h2 className="section-title">Train Inspection Results</h2><div className="section-controls"><input type="text" className="search-input" placeholder="Search by train ID..."/><button className="filter-btn"><i className="fas fa-filter"></i><span>Filter</span></button></div></div>
                     <div className="table-responsive"><table className="data-table"><thead><tr><th>Date</th><th>Train ID</th><th>Wagons</th><th>Status</th><th>Primary Damage</th><th>Severity</th><th>Actions</th></tr></thead><tbody>
@@ -135,9 +147,13 @@ const DashboardPage = () => {
                 </div>
             </div>
 
-            <DamageDetailsModal isOpen={isModalOpen} onClose={handleCloseModal} data={selectedTrain} />
+            <DamageDetailsModal 
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                data={selectedTrain}
+            />
         </>
     );
 };
 
-export default DashboardPage;
+export default NewDashboardPage;

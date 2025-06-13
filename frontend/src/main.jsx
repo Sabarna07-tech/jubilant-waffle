@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/css/themes.css'; // Import themes first
 import './assets/css/style.css'; 
+import './assets/css/new_styles.css'; // <-- ADD THIS LINE
 import 'react-toastify/dist/ReactToastify.css';
 
 // Import JS
@@ -21,7 +22,6 @@ import { TaskProvider } from './context/TaskContext.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* FIX: Correctly wrap App with Browser Router and all Providers */}
     <BrowserRouter>
       <ThemeProvider>
         <TaskProvider>

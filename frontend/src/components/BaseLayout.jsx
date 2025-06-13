@@ -1,39 +1,89 @@
 import React, { useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink } from 'react-router-dom';
+import Footer from './Footer';
+import LogoutModal from './LogoutModal';
 
-// FIX: Changed all import paths to be relative to the current file.
-import Navbar from './Navbar.jsx';
-import Footer from './Footer.jsx';
-import LogoutModal from './LogoutModal.jsx';
-import { logout } from '../api/apiService.js';
+const Sidebar = ({ isCollapsed, onLogoutClick }) => {
+    const userRole = localStorage.getItem('role');
+
+    return (
+        <nav className={`sidebar ${isCollapsed ? 'collapsed' : ''}`} id="sidebar">
+            <div className="sidebar-header">
+                <div className="logo"><i className="fas fa-train"></i></div>
+                <h1 className="sidebar-title">TrainVision</h1>
+            </div>
+            
+            <div className="nav-menu" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <div>
+                    {userRole === 's3_uploader' ? (
+                        <div className="nav-item">
+                            <NavLink to="/s3_dashboard" className="nav-link" end><i className="nav-icon fas fa-upload"></i><span className="nav-text">S3 Dashboard</span></NavLink>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="nav-item">
+                                <NavLink to="/dashboard" className="nav-link" end><i className="nav-icon fas fa-chart-line"></i><span className="nav-text">Dashboard</span></NavLink>
+                            </div>
+                            {/* FIXED: Restored correct links and names */}
+                            <div className="nav-item">
+                                <NavLink to="/frame_extraction" className="nav-link"><i className="nav-icon fas fa-cogs"></i><span className="nav-text">Frame Extraction</span></NavLink>
+                            </div>
+                            <div className="nav-item">
+                                <NavLink to="/damage_detection" className="nav-link"><i className="nav-icon fas fa-search"></i><span className="nav-text">Damage Detection</span></NavLink>
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                <div style={{ marginTop: 'auto' }}>
+                    <div className="nav-item">
+                        <a href="#" className="nav-link" onClick={onLogoutClick}><i className="nav-icon fas fa-sign-out-alt"></i><span className="nav-text">Logout</span></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+};
+
+const TopBar = ({ toggleSidebar, pageTitle }) => (
+    <header className="top-bar">
+        <div className="top-bar-left">
+            <button className="sidebar-toggle" id="sidebarToggle" onClick={toggleSidebar}><i className="fas fa-bars"></i></button>
+            <h1 className="page-title">{pageTitle}</h1>
+        </div>
+        <div className="top-bar-right">
+            <div className="status-indicator"><div className="status-dot"></div><span>System Online</span></div>
+        </div>
+    </header>
+);
 
 const BaseLayout = () => {
-    const [isLogoutModalOpen, setLogoutModalOpen] = useState(false);
-    const navigate = useNavigate();
+    const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-    const handleLogout = () => {
-        logout();
-        setLogoutModalOpen(false);
-        navigate('/login');
+    const toggleSidebar = () => setSidebarCollapsed(!isSidebarCollapsed);
+    const handleLogoutClick = (e) => {
+        e.preventDefault();
+        setIsLogoutModalOpen(true);
+    };
+
+    const getPageTitle = () => {
+        const path = window.location.pathname.split('/').pop().replace(/_/g, ' ');
+        if (path === 'dashboard') return 'Train Inspection Dashboard';
+        return path.replace(/\b\w/g, char => char.toUpperCase());
     };
 
     return (
-        <div className="wrapper d-flex flex-column vh-100">
-            <Navbar onLogoutClick={() => setLogoutModalOpen(true)} />
-            
-            <main className="flex-grow-1">
-                <div className="container mt-4 mb-5">
+        <div className="app-container">
+            <Sidebar isCollapsed={isSidebarCollapsed} onLogoutClick={handleLogoutClick} />
+            <div className="main-content">
+                <TopBar toggleSidebar={toggleSidebar} pageTitle={getPageTitle()} />
+                <div className="content-area">
                     <Outlet />
                 </div>
-            </main>
-
-            <Footer />
-            
-            <LogoutModal
-                isOpen={isLogoutModalOpen}
-                onClose={() => setLogoutModalOpen(false)}
-                onConfirmLogout={handleLogout}
-            />
+                <Footer />
+            </div>
+            <LogoutModal isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} />
         </div>
     );
 };
