@@ -11,18 +11,20 @@ export const TaskProvider = ({ children }) => {
     const [taskProgress, setTaskProgress] = useState(0);
     const [taskStatusText, setTaskStatusText] = useState('');
     const [taskResult, setTaskResult] = useState(null);
+    const [error, setError] = useState(null);
     const pollIntervalRef = useRef(null);
 
     const clearTask = () => {
+        if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current);
+            pollIntervalRef.current = null;
+        }
         setTaskId(null);
         setTaskState('IDLE');
         setTaskProgress(0);
         setTaskStatusText('');
         setTaskResult(null);
-        if (pollIntervalRef.current) {
-            clearInterval(pollIntervalRef.current);
-            pollIntervalRef.current = null;
-        }
+        setError(null);
     };
 
     const pollTaskStatus = (id) => {
@@ -33,58 +35,52 @@ export const TaskProvider = ({ children }) => {
         pollIntervalRef.current = setInterval(async () => {
             try {
                 const data = await getTaskStatus(id);
+                
                 setTaskProgress(data.progress || 0);
-                setTaskStatusText(data.status || 'Processing...');
+                setTaskStatusText(data.status_text || 'Processing...');
 
                 if (data.state === 'SUCCESS') {
-                    clearInterval(pollIntervalRef.current);
                     setTaskState('SUCCESS');
                     setTaskResult(data.result);
-                } else if (data.state === 'FAILURE') {
                     clearInterval(pollIntervalRef.current);
+                } else if (data.state === 'FAILURE' || data.state === 'REVOKED') {
                     setTaskState('FAILURE');
-                    alert('Processing failed: ' + data.status);
+                    setError(data.error || 'Task failed or was cancelled.');
+                    clearInterval(pollIntervalRef.current);
                 }
-            } catch (error) {
-                console.error("Polling error:", error);
-                clearInterval(pollIntervalRef.current);
+            } catch (err) {
+                setError('Failed to get task status.');
                 setTaskState('FAILURE');
+                clearInterval(pollIntervalRef.current);
             }
         }, 2000);
     };
 
     const startS3FrameExtraction = async (folderToProcess) => {
-        if (taskState === 'PROCESSING') {
-            alert('A task is already in progress.');
-            return;
-        }
-        
         clearTask();
         setTaskState('PROCESSING');
-        setTaskStatusText('Submitting task...');
-
         try {
             const response = await processS3Videos(folderToProcess);
-            if(response.success){
+            if (response.success) {
                 setTaskId(response.task_id);
                 pollTaskStatus(response.task_id);
             } else {
-                alert(`Failed to start processing: ${response.error}`);
                 setTaskState('FAILURE');
+                setError(response.error || 'Failed to start task.');
             }
-        } catch (error) {
-             alert('An error occurred while starting the processing task.');
-             console.error(error);
-             setTaskState('FAILURE');
+        } catch (err) {
+            setTaskState('FAILURE');
+            setError(err.message || 'An error occurred while starting the task.');
         }
     };
-
+    
     const value = {
         taskId,
         taskState,
         taskProgress,
         taskStatusText,
         taskResult,
+        error,
         startS3FrameExtraction,
         clearTask
     };

@@ -11,8 +11,8 @@ from celery.result import AsyncResult
 from services.s3_utils import upload_file_to_s3, list_videos_in_folder, check_file_exists, get_s3_usage_stats, generate_presigned_url
 
 # Mock User Data & Roles
-USERS = { "admin": "123", "user": "123", "admin1": "Uploader@123" }
-ADMIN_ROLES = { "admin": "standard", "user": "standard", "admin1": "s3_uploader" }
+USERS = { "admin": "123", "user": "123", "admin1": "Uploader@123", "viewer": "123" }
+ADMIN_ROLES = { "admin": "standard", "user": "standard", "admin1": "s3_uploader", "viewer": "viewer" }
 ALLOWED_EXTENSIONS = {'mp4', 'avi', 'mov'}
 
 api_bp = Blueprint('api', __name__)

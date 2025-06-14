@@ -3,6 +3,10 @@ import { Outlet, NavLink } from 'react-router-dom';
 import Footer from './Footer';
 import LogoutModal from './LogoutModal';
 
+// frontend/src/components/BaseLayout.jsx
+
+// ... (imports)
+
 const Sidebar = ({ isCollapsed, onLogoutClick }) => {
     const userRole = localStorage.getItem('role');
 
@@ -19,7 +23,11 @@ const Sidebar = ({ isCollapsed, onLogoutClick }) => {
                         <div className="nav-item">
                             <NavLink to="/s3_dashboard" className="nav-link" end><i className="nav-icon fas fa-upload"></i><span className="nav-text">S3 Dashboard</span></NavLink>
                         </div>
-                    ) : (
+                    ) : userRole === 'viewer' ? (
+                        <div className="nav-item">
+                            <NavLink to="/dashboard" className="nav-link" end><i className="nav-icon fas fa-chart-line"></i><span className="nav-text">Dashboard</span></NavLink>
+                        </div>
+                    ) : ( // Admin and other standard users
                         <>
                             <div className="nav-item">
                                 <NavLink to="/dashboard" className="nav-link" end><i className="nav-icon fas fa-chart-line"></i><span className="nav-text">Dashboard</span></NavLink>
@@ -44,6 +52,9 @@ const Sidebar = ({ isCollapsed, onLogoutClick }) => {
         </nav>
     );
 };
+
+
+// ... (rest of the file)
 
 const TopBar = ({ toggleSidebar, pageTitle }) => (
     <header className="top-bar">

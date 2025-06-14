@@ -5,27 +5,36 @@ import BaseLayout from './components/BaseLayout.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import S3DashboardPage from './pages/S3DashboardPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
-import UploadPage from './pages/UploadPage.jsx'; // This is the S3 retrieval page
-import DamageDetectionPage from './pages/DamageDetectionPage.jsx'; // The damage results page
+import UploadPage from './pages/UploadPage.jsx';
+import DamageDetectionPage from './pages/DamageDetectionPage.jsx';
 
 const ProtectedRoute = ({ children }) => {
     const token = localStorage.getItem('token');
     const location = useLocation();
-    if (!token) return <Navigate to="/login" state={{ from: location }} replace />;
+
+    if (!token) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
     return children;
 };
 
 const RoleProtectedRoute = ({ children, allowedRole }) => {
     const userRole = localStorage.getItem('role');
-    if (userRole !== allowedRole) return <Navigate to="/dashboard" replace />;
+    if (userRole !== allowedRole) {
+        return <Navigate to="/dashboard" replace />;
+    }
     return children;
 }
 
 const RoleBasedHomePage = () => {
     const userRole = localStorage.getItem('role');
-    if (userRole === 's3_uploader') return <Navigate to="/s3_dashboard" replace />;
+    if (userRole === 's3_uploader') {
+        return <Navigate to="/s3_dashboard" replace />;
+    }
+    // For admin, viewer, and any other role, redirect to the main dashboard.
     return <Navigate to="/dashboard" replace />;
 };
+
 
 function App() {
     return (
@@ -36,8 +45,6 @@ function App() {
                 <Route index element={<RoleBasedHomePage />} />
                 
                 <Route path="dashboard" element={<DashboardPage />} />
-                
-                {/* FIXED: Restored the routes for Frame Extraction and Damage Detection */}
                 <Route path="frame_extraction" element={<UploadPage />} />
                 <Route path="damage_detection" element={<DamageDetectionPage />} />
                 

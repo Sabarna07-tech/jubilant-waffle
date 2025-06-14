@@ -12,13 +12,13 @@ const UploadPage = () => {
     const [selectedFolderId, setSelectedFolderId] = useState('');
     const [error, setError] = useState('');
 
-    const { 
-        taskState, 
-        taskProgress, 
-        taskStatusText, 
-        taskResult, 
-        startS3FrameExtraction, 
-        clearTask 
+    const {
+        taskState,
+        taskProgress,
+        taskStatusText,
+        taskResult,
+        startS3FrameExtraction,
+        clearTask
     } = useContext(TaskContext);
 
     useEffect(() => {
@@ -35,11 +35,11 @@ const UploadPage = () => {
         setSelectedFolderId('');
         clearTask(); // Clear any previous task state
 
-        const formData = { 
+        const formData = {
             retrieve_date: retrieveDate,
-            client_id: clientId, 
-            camera_angle: cameraAngle, 
-            video_type: videoType 
+            client_id: clientId,
+            camera_angle: cameraAngle,
+            video_type: videoType
         };
 
         try {
@@ -59,7 +59,7 @@ const UploadPage = () => {
             setIsLoading(false);
         }
     };
-    
+
     const handleProcess = async () => {
         const folderToProcess = folders.find(f => f.id === selectedFolderId);
         if (!folderToProcess) {
@@ -107,7 +107,7 @@ const UploadPage = () => {
                 </div>
                 <div className="p-4">
                     <div className="alert alert-success" role="alert">
-                        Successfully extracted <strong>{taskResult?.count || 0}</strong> frames. 
+                        Successfully extracted <strong>{taskResult?.count || 0}</strong> frames.
                         {taskResult?.count > 16 && ` Showing the first 16.`}
                     </div>
                      <div className="wagon-grid">
@@ -125,7 +125,7 @@ const UploadPage = () => {
             </div>
         );
     }
-    
+
     // Default view for searching
     return (
         <div className="data-section fade-in">

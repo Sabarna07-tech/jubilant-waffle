@@ -7,7 +7,7 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './assets/css/themes.css'; // Import themes first
-import './assets/css/style.css'; 
+import './assets/css/style.css';
 import './assets/css/new_styles.css'; // <-- ADD THIS LINE
 import 'react-toastify/dist/ReactToastify.css';
 
