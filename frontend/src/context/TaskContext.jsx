@@ -1,5 +1,6 @@
 import React, { createContext, useState, useRef, useEffect, useContext } from 'react';
-import { getTaskStatus, processS3Videos } from '../api/apiService';
+import { getTaskStatus, processS3Videos, cancelTask as apiCancelTask } from '../api/apiService';
+import { toast } from 'react-toastify';
 
 export const TaskContext = createContext();
 
@@ -25,6 +26,26 @@ export const TaskProvider = ({ children }) => {
         setTaskStatusText('');
         setTaskResult(null);
         setError(null);
+    };
+
+    const cancelTask = async () => {
+        if (!taskId) {
+            toast.warn("No active task to cancel.");
+            return;
+        }
+
+        try {
+            const response = await apiCancelTask(taskId);
+            if (response.success) {
+                toast.info("Task cancellation requested successfully.");
+            } else {
+                toast.error(response.error || "Failed to send cancellation request.");
+            }
+        } catch (err) {
+            toast.error("An error occurred while trying to cancel the task.");
+        } finally {
+            clearTask(); // Reset the UI state regardless
+        }
     };
 
     const pollTaskStatus = (id) => {
@@ -82,7 +103,8 @@ export const TaskProvider = ({ children }) => {
         taskResult,
         error,
         startS3FrameExtraction,
-        clearTask
+        clearTask,
+        cancelTask
     };
 
     return (

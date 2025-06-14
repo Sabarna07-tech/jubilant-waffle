@@ -18,7 +18,8 @@ const UploadPage = () => {
         taskStatusText,
         taskResult,
         startS3FrameExtraction,
-        clearTask
+        clearTask,
+        cancelTask
     } = useContext(TaskContext);
 
     useEffect(() => {
@@ -90,6 +91,11 @@ const UploadPage = () => {
                      <p className="text-muted">{taskStatusText}</p>
                      <div className="progress mt-4" style={{height: '10px'}}>
                          <div className="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style={{ width: `${taskProgress}%`, background: 'var(--gradient-primary)' }}>{taskProgress}%</div>
+                     </div>
+                     <div className="mt-4">
+                        <button className="action-btn outline" onClick={cancelTask}>
+                            <i className="fas fa-times me-2"></i>Cancel
+                        </button>
                      </div>
                 </div>
              </div>

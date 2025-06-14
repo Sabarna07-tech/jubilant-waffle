@@ -21,7 +21,7 @@ const Sidebar = ({ isCollapsed, onLogoutClick }) => {
                 <div>
                     {userRole === 's3_uploader' ? (
                         <div className="nav-item">
-                            <NavLink to="/s3_dashboard" className="nav-link" end><i className="nav-icon fas fa-upload"></i><span className="nav-text">S3 Dashboard</span></NavLink>
+                            <NavLink to="/s3_dashboard" className="nav-link" end><i className="nav-icon fas fa-upload"></i><span className="nav-text">Upload</span></NavLink>
                         </div>
                     ) : userRole === 'viewer' ? (
                         <div className="nav-item">
@@ -79,9 +79,11 @@ const BaseLayout = () => {
     };
 
     const getPageTitle = () => {
-        const path = window.location.pathname.split('/').pop().replace(/_/g, ' ');
+        const path = window.location.pathname.split('/').pop();
         if (path === 'dashboard') return 'Train Inspection Dashboard';
-        return path.replace(/\b\w/g, char => char.toUpperCase());
+        if (path === 's3_dashboard') return 'Upload'; // Add this special case
+        const formattedPath = path.replace(/_/g, ' ');
+        return formattedPath.replace(/\b\w/g, char => char.toUpperCase());
     };
 
     return (

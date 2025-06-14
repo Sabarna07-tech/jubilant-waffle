@@ -85,6 +85,17 @@ export const getTaskStatus = async (taskId) => {
 };
 
 /**
+ * Sends a request to cancel a running Celery task.
+ */
+export const cancelTask = async (taskId) => {
+    const response = await fetchWithAuth(`${API_URL}/task-cancel/${taskId}`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+    });
+    return response.json();
+};
+
+/**
  * Retrieves a list of video folders and files from S3 based on criteria.
  */
 export const retrieveVideos = async (formData) => {

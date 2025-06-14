@@ -226,6 +226,21 @@ def task_status(current_user, task_id):
         
     return jsonify(response)
 
+@api_bp.route('/task-cancel/<task_id>', methods=['POST'])
+@token_required
+def cancel_task(current_user, task_id):
+    """Revokes a celery task."""
+    if not task_id:
+        return jsonify({'success': False, 'error': 'Task ID is missing.'}), 400
+    try:
+        # Revoke the task. terminate=True will try to kill the worker process.
+        process_s3_videos_task.AsyncResult(task_id).revoke(terminate=True)
+        return jsonify({'success': True, 'message': f'Task {task_id} cancellation request sent.'})
+    except Exception as e:
+        # Log the exception
+        current_app.logger.error(f"Error cancelling task {task_id}: {str(e)}")
+        return jsonify({'success': False, 'error': 'Failed to send cancellation request.'}), 500
+
 @api_bp.route('/system-status', methods=['GET'])
 @token_required
 def get_system_status(current_user):
