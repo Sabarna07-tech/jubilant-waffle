@@ -24,7 +24,6 @@ const S3DashboardPage = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     
-    // Initialize state from localStorage for persistent history
     const [recentUploads, setRecentUploads] = useState(() => {
         try {
             const savedUploads = localStorage.getItem('uploadHistory');
@@ -63,7 +62,6 @@ const S3DashboardPage = () => {
         };
     }, []);
 
-    // Effect to save recentUploads to localStorage whenever it changes
     useEffect(() => {
         try {
             localStorage.setItem('uploadHistory', JSON.stringify(recentUploads));
@@ -279,6 +277,13 @@ const S3DashboardPage = () => {
         });
     };
 
+    // --- DATE PICKER RESTRICTION LOGIC ---
+    const today = new Date();
+    const maxDate = today.toISOString().split('T')[0];
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(today.getDate() - 2);
+    const minDate = twoDaysAgo.toISOString().split('T')[0];
+    
     return (
         <div id="s3_dashboard_container">
             {/* --- UPLOAD SECTION --- */}
@@ -292,21 +297,31 @@ const S3DashboardPage = () => {
                                     <div className="col-md-6">
                                         <div className="mb-3">
                                             <label htmlFor="uploadDate" className="form-label">Video Date:</label>
-                                            <input type="date" className="form-control" id="uploadDate" value={uploadDate} onChange={e => setUploadDate(e.target.value)} required />
+                                            {/* ADDED min and max attributes to restrict dates */}
+                                            <input
+                                                type="date"
+                                                className="form-control"
+                                                id="uploadDate"
+                                                value={uploadDate}
+                                                onChange={e => setUploadDate(e.target.value)}
+                                                min={minDate}
+                                                max={maxDate}
+                                                required
+                                            />
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Camera Angle:</label>
                                             <div>
-                                                <div className="form-check form-check-inline"><input className="form-check-input" type="radio" id="camLeft" name="cameraAngle" value="left" checked={cameraAngle === 'left'} onChange={e => setCameraAngle(e.target.value)} /><label className="form-check-label" htmlFor="camLeft">Left</label></div>
-                                                <div className="form-check form-check-inline"><input className="form-check-input" type="radio" id="camRight" name="cameraAngle" value="right" checked={cameraAngle === 'right'} onChange={e => setCameraAngle(e.target.value)} /><label className="form-check-label" htmlFor="camRight">Right</label></div>
-                                                <div className="form-check form-check-inline"><input className="form-check-input" type="radio" id="camTop" name="cameraAngle" value="top" checked={cameraAngle === 'top'} onChange={e => setCameraAngle(e.target.value)} /><label className="form-check-label" htmlFor="camTop">Top</label></div>
+                                                <div className="form-check"><input className="form-check-input" type="radio" id="camLeft" name="cameraAngle" value="left" checked={cameraAngle === 'left'} onChange={e => setCameraAngle(e.target.value)} /><label className="form-check-label" htmlFor="camLeft">Left</label></div>
+                                                <div className="form-check"><input className="form-check-input" type="radio" id="camRight" name="cameraAngle" value="right" checked={cameraAngle === 'right'} onChange={e => setCameraAngle(e.target.value)} /><label className="form-check-label" htmlFor="camRight">Right</label></div>
+                                                <div className="form-check"><input className="form-check-input" type="radio" id="camTop" name="cameraAngle" value="top" checked={cameraAngle === 'top'} onChange={e => setCameraAngle(e.target.value)} /><label className="form-check-label" htmlFor="camTop">Top</label></div>
                                             </div>
                                         </div>
                                         <div className="mb-3">
                                             <label className="form-label">Video Type:</label>
                                             <div>
-                                                <div className="form-check form-check-inline"><input className="form-check-input" type="radio" id="vidEntry" name="videoType" value="entry" checked={videoType === 'entry'} onChange={e => setVideoType(e.target.value)} /><label className="form-check-label" htmlFor="vidEntry">Entry</label></div>
-                                                <div className="form-check form-check-inline"><input className="form-check-input" type="radio" id="vidExit" name="videoType" value="exit" checked={videoType === 'exit'} onChange={e => setVideoType(e.target.value)} /><label className="form-check-label" htmlFor="vidExit">Exit</label></div>
+                                                <div className="form-check"><input className="form-check-input" type="radio" id="vidEntry" name="videoType" value="entry" checked={videoType === 'entry'} onChange={e => setVideoType(e.target.value)} /><label className="form-check-label" htmlFor="vidEntry">Entry</label></div>
+                                                <div className="form-check"><input className="form-check-input" type="radio" id="vidExit" name="videoType" value="exit" checked={videoType === 'exit'} onChange={e => setVideoType(e.target.value)} /><label className="form-check-label" htmlFor="vidExit">Exit</label></div>
                                             </div>
                                         </div>
                                     </div>
@@ -372,8 +387,7 @@ const S3DashboardPage = () => {
 
             {userRole !== 's3_uploader' && (
                 <>
-                    <hr className="my-5" />
-                    {/* ... Retrieve and Process Section ... */}
+                    {/* ... Retrieve and Process Section remains the same ... */}
                 </>
             )}
         </div>
